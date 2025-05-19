@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   selector: 'app-player',
   templateUrl: './player.page.html',
   styleUrls: ['./player.page.scss'],
-  standalone:false,
+  standalone: false,
 })
 export class PlayerPage implements OnInit {
   track: any;
@@ -69,6 +69,18 @@ export class PlayerPage implements OnInit {
 
   toggleRepeat() {
     this.repeat = !this.repeat;
+  }
+
+  playNext() {
+    this.musicService.playNext();
+    this.track = this.musicService.getCurrentTrack();
+    this.setupProgressWatcher();
+  }
+
+  playPrevious() {
+    this.musicService.playPrevious();
+    this.track = this.musicService.getCurrentTrack();
+    this.setupProgressWatcher();
   }
 
   formatTime(seconds: number): string {

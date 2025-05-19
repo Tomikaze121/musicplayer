@@ -4,8 +4,10 @@ import { Dialog } from '@capacitor/dialog';
 import { MusicService } from 'src/app/services/music.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { Router } from '@angular/router';
+import { DeezerService } from 'src/app/services/deezer.service';
 import { ModalController, ToastController } from '@ionic/angular';
 import { PlaylistPickerComponent } from 'src/app/components/playlist-picker/playlist-picker.component';
+import { Howl } from 'howler';
 
 @Component({
   selector: 'app-home',
@@ -15,14 +17,21 @@ import { PlaylistPickerComponent } from 'src/app/components/playlist-picker/play
 })
 export class HomePage implements OnInit {
   tracks: any[] = [];
+  filteredTracks: any[] = [];
+  localQuery: string = '';
   filter: string = 'all';
+  deezerQuery = '';
+  deezerTracks: any[] = [];
+  isOnline: boolean = true;
+  currentStreamSound: Howl | null = null;
 
   constructor(
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private musicService: MusicService,
     private playlistService: PlaylistService,
-    private router: Router
+    private router: Router,
+    private deezerService: DeezerService
   ) {}
 
   async ngOnInit() {
@@ -30,6 +39,7 @@ export class HomePage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    this.isOnline = navigator.onLine;
     await this.loadAudioFiles();
   }
 
@@ -45,11 +55,19 @@ export class HomePage implements OnInit {
         .map(file => ({
           name: file.name,
           path: `file:///storage/emulated/0/Documents/${file.name}`,
+          type: 'local'
         }));
-    } catch (error) {
-      console.error('Error reading files', error);
+
+      this.filteredTracks = [...this.tracks];
+    } catch {
       this.tracks = [];
+      this.filteredTracks = [];
     }
+  }
+
+  filterLocalTracks() {
+    const q = this.localQuery.toLowerCase();
+    this.filteredTracks = this.tracks.filter(t => t.name.toLowerCase().includes(q));
   }
 
   playTrack(track: any) {
@@ -78,16 +96,8 @@ export class HomePage implements OnInit {
     if (!file) return;
 
     const arrayBuffer = await file.arrayBuffer();
-    const base64 = btoa(
-      new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
-
-    await Filesystem.writeFile({
-      path: file.name,
-      data: base64,
-      directory: Directory.Documents,
-    });
-
+    const base64 = btoa(new Uint8Array(arrayBuffer).reduce((d, b) => d + String.fromCharCode(b), ''));
+    await Filesystem.writeFile({ path: file.name, data: base64, directory: Directory.Documents });
     await this.loadAudioFiles();
   }
 
@@ -105,11 +115,8 @@ export class HomePage implements OnInit {
       component: PlaylistPickerComponent,
       componentProps: { track },
     });
-
     await modal.present();
-
     const { data } = await modal.onDidDismiss();
-
     if (data?.added) {
       const toast = await this.toastCtrl.create({
         message: `Added to "${data.playlist}"`,
@@ -120,17 +127,34 @@ export class HomePage implements OnInit {
     }
   }
 
-  filterItems() {
-    switch (this.filter) {
-      case 'music':
-        console.log('Filter: Music');
-        break;
-      case 'playlists':
-        this.router.navigate(['/playlist-list']);
-        break;
-      default:
-        console.log('Filter: All');
-        break;
+  async searchDeezer() {
+    if (!this.isOnline || !this.deezerQuery.trim()) return;
+    this.deezerTracks = await this.deezerService.searchTracks(this.deezerQuery);
+  }
+
+  playDeezerPreview(track: any) {
+    if (!track.preview) return alert('No preview available');
+
+    if (this.currentStreamSound) {
+      this.currentStreamSound.stop();
+      this.currentStreamSound = null;
     }
+
+    this.currentStreamSound = new Howl({ src: [track.preview], html5: true });
+    this.currentStreamSound.play();
+
+    this.musicService.setStreamingTrack({
+      name: track.title,
+      path: track.preview,
+      type: 'stream',
+      album: track.album,
+      artist: track.artist
+    });
+
+    this.router.navigate(['/player']);
+  }
+
+  filterItems() {
+    if (this.filter === 'playlists') this.router.navigate(['/playlist-list']);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { MusicService } from 'src/app/services/music.service';
 import { Router } from '@angular/router';
+import { MusicService } from 'src/app/services/music.service';
+import { Howl } from 'howler';
 
 @Component({
   selector: 'app-mini-player',
@@ -9,60 +10,64 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class MiniPlayerComponent implements OnInit {
-  track: any;
+  track: any = null;
   isPlaying = false;
   currentTime = 0;
   duration = 0;
 
   constructor(private musicService: MusicService, private router: Router, private zone: NgZone) {}
 
-  async ngOnInit() {
-    await this.musicService.restoreTrack();
-    this.update();
-    this.setupProgress();
+  ngOnInit() {
+    this.updatePlayerState();
+    this.watchProgress();
   }
 
-  update() {
+  updatePlayerState() {
     this.track = this.musicService.getCurrentTrack();
     this.isPlaying = this.musicService.isPlaying();
+    const sound = (this.musicService as any).currentSound as Howl;
+    this.duration = sound?.duration() || 0;
   }
 
-  setupProgress() {
-    const sound = (this.musicService as any).currentSound;
-    if (sound) {
-      this.duration = sound.duration();
-      const loop = () => {
-        if (sound.playing()) {
-          this.zone.run(() => {
-            this.currentTime = sound.seek() as number;
-          });
-          requestAnimationFrame(loop);
-        }
-      };
-      loop();
-    }
-  }
-
-  togglePlayPause() {
+  togglePlayPause(event: Event) {
+    event.stopPropagation();
     if (this.isPlaying) {
       this.musicService.pause();
     } else {
       this.musicService.resume();
     }
-    setTimeout(() => this.update(), 100);
+    this.updatePlayerState();
   }
 
-  playNext() {
+  playNext(event: Event) {
+    event.stopPropagation();
     this.musicService.playNext();
-    this.update();
+    this.updatePlayerState();
   }
 
-  playPrevious() {
+  playPrevious(event: Event) {
+    event.stopPropagation();
     this.musicService.playPrevious();
-    this.update();
+    this.updatePlayerState();
   }
 
   openPlayer() {
     this.router.navigate(['/player']);
+  }
+
+  watchProgress() {
+    const update = () => {
+      const sound = (this.musicService as any).currentSound as Howl;
+      this.zone.run(() => {
+        this.currentTime = sound?.seek() as number || 0;
+        this.duration = sound?.duration() || 0;
+        this.isPlaying = sound?.playing() || false;
+        this.track = this.musicService.getCurrentTrack();
+      });
+
+      requestAnimationFrame(update);
+    };
+
+    requestAnimationFrame(update);
   }
 }

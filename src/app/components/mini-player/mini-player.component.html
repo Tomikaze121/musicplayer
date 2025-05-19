@@ -1,25 +1,25 @@
-<ion-card class="mini-player" *ngIf="track?.name">
+<ion-card class="mini-player" *ngIf="track?.name || track?.title">
   <div class="mini-info" (click)="openPlayer()">
-    <strong>{{ track.name }}</strong>
+    <strong>{{ track?.name || track?.title }}</strong>
     <ion-range
       class="mini-progress"
       [value]="currentTime"
       [min]="0"
-      [max]="duration"
+      [max]="duration || 100"
       disabled
     ></ion-range>
   </div>
 
   <div class="mini-controls">
-    <ion-button fill="clear" size="small" (click)="playPrevious(); $event.stopPropagation()">
+    <ion-button fill="clear" size="small" (click)="playPrevious($event)">
       <ion-icon name="play-skip-back-outline" slot="icon-only"></ion-icon>
     </ion-button>
 
-    <ion-button fill="clear" size="small" (click)="togglePlayPause(); $event.stopPropagation()">
-      <ion-icon [name]="isPlaying ? 'pause' : 'play'" slot="icon-only"></ion-icon>
+    <ion-button fill="clear" size="small" (click)="togglePlayPause($event)">
+      <ion-icon [name]="isPlaying ? 'pause-outline' : 'play-outline'" slot="icon-only"></ion-icon>
     </ion-button>
 
-    <ion-button fill="clear" size="small" (click)="playNext(); $event.stopPropagation()">
+    <ion-button fill="clear" size="small" (click)="playNext($event)">
       <ion-icon name="play-skip-forward-outline" slot="icon-only"></ion-icon>
     </ion-button>
   </div>

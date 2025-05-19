@@ -40,12 +40,20 @@
         ></ion-icon>
       </ion-button>
 
+      <ion-button fill="clear" (click)="playPrevious()">
+        <ion-icon name="play-skip-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+
       <ion-button fill="outline" shape="round" (click)="pause()" *ngIf="isPlaying">
         <ion-icon slot="icon-only" name="pause-outline"></ion-icon>
       </ion-button>
 
       <ion-button fill="solid" shape="round" (click)="play()" *ngIf="!isPlaying">
         <ion-icon slot="icon-only" name="play-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" (click)="playNext()">
+        <ion-icon name="play-skip-forward-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </div>
   </div>

@@ -4,41 +4,40 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class MusicService {
   private currentSound: Howl | null = null;
   private currentTrack: any = null;
   private playlist: any[] = [];
   private currentIndex: number = 0;
 
-  constructor() {}
-
   async play(track: any) {
-    if (!track || !track.path) return;
+    if (!track) return;
 
     await Preferences.set({ key: 'currentTrack', value: JSON.stringify(track) });
     this.currentTrack = track;
 
     if (this.currentSound) {
+      this.currentSound.stop();
       this.currentSound.unload();
     }
 
+    let src = '';
     try {
-      let finalUri = track.path;
-      if (!track.path.startsWith('file://')) {
+      if (track.preview) {
+        src = track.preview;
+      } else if (track.path && track.path.startsWith('file://')) {
+        src = this.convertFileSrc(track.path);
+      } else if (track.path) {
         const { uri } = await Filesystem.getUri({
           path: track.path,
           directory: Directory.Documents,
         });
-        finalUri = uri;
+        src = this.convertFileSrc(uri);
       }
 
-      const safeUri = this.convertFileSrc(finalUri);
-
       this.currentSound = new Howl({
-        src: [safeUri],
+        src: [src],
         html5: true,
         format: ['mp3', 'aac', 'wav', 'flac', 'ogg', 'opus'],
         onend: () => this.playNext(),
@@ -77,6 +76,12 @@ export class MusicService {
   getCurrentTrack() {
     return this.currentTrack;
   }
+
+  setStreamingTrack(track: any) {
+  this.playlist = [track];
+  this.currentIndex = 0;
+  this.play(track);
+}
 
   async restoreTrack() {
     const { value } = await Preferences.get({ key: 'currentTrack' });
