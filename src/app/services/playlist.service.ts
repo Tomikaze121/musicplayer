@@ -22,6 +22,12 @@ export class PlaylistService {
     return value ? JSON.parse(value) : [];
   }
 
+  async deletePlaylist(name: string): Promise<void> {
+  const playlists = await this.getPlaylists();
+  const updated = playlists.filter(p => p.name !== name);
+  await this.savePlaylists(updated);
+}
+
   async savePlaylists(playlists: Playlist[]): Promise<void> {
     await Preferences.set({
       key: PLAYLISTS_KEY,

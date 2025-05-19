@@ -10,16 +10,19 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <div class="filter-bar">
     <ion-segment [(ngModel)]="filter" class="custom-segment" (ionChange)="filterItems()">
       <ion-segment-button value="all">All</ion-segment-button>
       <ion-segment-button value="music">Music</ion-segment-button>
-      <ion-segment-button value="podcasts">Podcasts</ion-segment-button>
+      <ion-segment-button value="playlists">Playlists</ion-segment-button>
     </ion-segment>
 
     <ion-button fill="outline" class="pill-button" (click)="createPlaylist()">
       ➕ Create Playlist
+    </ion-button>
+
+    <ion-button fill="outline" class="pill-button" (click)="fileInput.click()">
+      ➕ Add Music
     </ion-button>
   </div>
 
@@ -30,10 +33,6 @@
     #fileInput
     (change)="pickAndSaveFile($event)"
   />
-
-  <ion-button expand="block" class="pill-button solid" (click)="fileInput.click()">
-    ➕ Add Music
-  </ion-button>
 
   <ion-list *ngIf="tracks.length > 0; else noTracks">
     <ion-item-sliding *ngFor="let track of tracks">

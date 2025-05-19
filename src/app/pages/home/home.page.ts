@@ -91,12 +91,12 @@ export class HomePage implements OnInit {
     await this.loadAudioFiles();
   }
 
-  createPlaylist() {
+  async createPlaylist() {
     const name = prompt('New Playlist Name:');
     if (name && name.trim() !== '') {
-      this.playlistService.createPlaylist(name.trim()).then(() => {
-        alert(`Playlist "${name}" created.`);
-      });
+      await this.playlistService.createPlaylist(name.trim());
+      alert(`Playlist "${name}" created.`);
+      this.router.navigate(['/playlist-list']);
     }
   }
 
@@ -125,8 +125,8 @@ export class HomePage implements OnInit {
       case 'music':
         console.log('Filter: Music');
         break;
-      case 'podcasts':
-        console.log('Filter: Podcasts');
+      case 'playlists':
+        this.router.navigate(['/playlist-list']);
         break;
       default:
         console.log('Filter: All');

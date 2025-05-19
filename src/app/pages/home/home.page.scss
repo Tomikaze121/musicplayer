@@ -20,17 +20,14 @@
       font-size: 14px;
     }
   }
-}
 
-.pill-button {
-  height: 32px;
-  font-size: 14px;
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --border-radius: 20px;
-}
-
-.pill-button.solid {
-  --background: #3880ff;
-  --color: white;
+  ion-button.pill-button {
+    height: 32px;
+    font-size: 14px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --border-radius: 20px;
+    min-width: 140px;
+    text-transform: none;
+  }
 }

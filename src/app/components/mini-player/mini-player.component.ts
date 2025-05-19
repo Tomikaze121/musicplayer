@@ -49,7 +49,7 @@ export class MiniPlayerComponent implements OnInit {
     } else {
       this.musicService.resume();
     }
-    this.update();
+    setTimeout(() => this.update(), 100);
   }
 
   playNext() {

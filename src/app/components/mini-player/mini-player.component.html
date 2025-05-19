@@ -1,4 +1,4 @@
-<ion-card class="mini-player" *ngIf="track">
+<ion-card class="mini-player" *ngIf="track?.name">
   <div class="mini-info" (click)="openPlayer()">
     <strong>{{ track.name }}</strong>
     <ion-range
