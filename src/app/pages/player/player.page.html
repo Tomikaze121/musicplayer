@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Now Playing</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="stop()">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" fullscreen>
+  <div class="track-container">
+    <img [src]="'assets/placeholder-album.png'" class="album-art" />
+
+    <div class="track-info">
+      <h2>{{ track?.name }}</h2>
+      <p>{{ track?.path }}</p>
+    </div>
+
+    <div class="progress-container">
+      <div class="time">
+        <span>{{ formatTime(currentTime) }}</span>
+        <span>{{ formatTime(duration) }}</span>
+      </div>
+      <ion-range
+        [value]="currentTime"
+        [min]="0"
+        [max]="duration"
+        (ionChange)="seekTo($event)"
+      ></ion-range>
+    </div>
+
+    <div class="controls">
+      <ion-button fill="clear" (click)="toggleRepeat()">
+        <ion-icon
+          slot="icon-only"
+          [name]="repeat ? 'repeat' : 'repeat-outline'"
+          [color]="repeat ? 'primary' : 'medium'"
+        ></ion-icon>
+      </ion-button>
+
+      <ion-button fill="outline" shape="round" (click)="pause()" *ngIf="isPlaying">
+        <ion-icon slot="icon-only" name="pause-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="solid" shape="round" (click)="play()" *ngIf="!isPlaying">
+        <ion-icon slot="icon-only" name="play-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

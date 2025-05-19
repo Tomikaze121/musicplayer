@@ -1,0 +1,36 @@
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  flex-wrap: wrap;
+
+  ion-segment.custom-segment {
+    --background: transparent;
+    --indicator-color: transparent;
+
+    ion-segment-button {
+      --border-radius: 20px;
+      --color-checked: #000;
+      --background-checked: white;
+      --color: black;
+      --background: rgba(0, 0, 0, 0.05);
+      padding: 0 16px;
+      height: 32px;
+      font-size: 14px;
+    }
+  }
+}
+
+.pill-button {
+  height: 32px;
+  font-size: 14px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --border-radius: 20px;
+}
+
+.pill-button.solid {
+  --background: #3880ff;
+  --color: white;
+}

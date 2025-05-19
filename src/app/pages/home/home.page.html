@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lequigan Music Player</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/settings']">
+        <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="filter-bar">
+    <ion-segment [(ngModel)]="filter" class="custom-segment" (ionChange)="filterItems()">
+      <ion-segment-button value="all">All</ion-segment-button>
+      <ion-segment-button value="music">Music</ion-segment-button>
+      <ion-segment-button value="podcasts">Podcasts</ion-segment-button>
+    </ion-segment>
+
+    <ion-button fill="outline" class="pill-button" (click)="createPlaylist()">
+      ➕ Create Playlist
+    </ion-button>
+  </div>
+
+  <input
+    type="file"
+    accept=".mp3,.wav,.ogg,.flac,.aac,.opus"
+    hidden
+    #fileInput
+    (change)="pickAndSaveFile($event)"
+  />
+
+  <ion-button expand="block" class="pill-button solid" (click)="fileInput.click()">
+    ➕ Add Music
+  </ion-button>
+
+  <ion-list *ngIf="tracks.length > 0; else noTracks">
+    <ion-item-sliding *ngFor="let track of tracks">
+      <ion-item (click)="playTrack(track)">
+        <ion-label>
+          <h2>{{ track.name }}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="success" (click)="promptAddToPlaylist(track)">
+          Add to Playlist
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteTrack(track)">
+          Delete
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ng-template #noTracks>
+    <ion-text color="medium">
+      <p>No audio files found in Documents folder.</p>
+    </ion-text>
+  </ng-template>
+</ion-content>
+
+<app-mini-player></app-mini-player>

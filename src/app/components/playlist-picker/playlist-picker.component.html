@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Select Playlist</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list *ngIf="playlists.length > 0; else empty">
+    <ion-item button *ngFor="let p of playlists" (click)="select(p)">
+      <ion-label>{{ p.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #empty>
+    <ion-text color="medium">
+      <p>No playlists found.</p>
+    </ion-text>
+  </ng-template>
+</ion-content>

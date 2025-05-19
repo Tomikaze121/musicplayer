@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/playlist-list"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ playlistName }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list *ngIf="tracks.length > 0; else empty">
+    <ion-item-sliding *ngFor="let track of tracks">
+      <ion-item button (click)="playTrack(track)">
+        <ion-label>{{ track.name }}</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteTrack(track)">
+          Remove
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ng-template #empty>
+    <ion-text color="medium">
+      <p>No tracks in this playlist.</p>
+    </ion-text>
+  </ng-template>
+</ion-content>
+
+<app-mini-player></app-mini-player>

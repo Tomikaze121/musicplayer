@@ -1,0 +1,26 @@
+<ion-card class="mini-player" *ngIf="track">
+  <div class="mini-info" (click)="openPlayer()">
+    <strong>{{ track.name }}</strong>
+    <ion-range
+      class="mini-progress"
+      [value]="currentTime"
+      [min]="0"
+      [max]="duration"
+      disabled
+    ></ion-range>
+  </div>
+
+  <div class="mini-controls">
+    <ion-button fill="clear" size="small" (click)="playPrevious(); $event.stopPropagation()">
+      <ion-icon name="play-skip-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear" size="small" (click)="togglePlayPause(); $event.stopPropagation()">
+      <ion-icon [name]="isPlaying ? 'pause' : 'play'" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear" size="small" (click)="playNext(); $event.stopPropagation()">
+      <ion-icon name="play-skip-forward-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+</ion-card>
