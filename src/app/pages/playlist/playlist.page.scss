@@ -1,0 +1,48 @@
+ion-content {
+  padding: 16px;
+  background: red , #fff;
+}
+
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: red;
+  }
+
+  ion-button {
+    background-color: #e53935;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 0 16px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+ion-list {
+  margin-top: 10px;
+}
+
+ion-item-sliding {
+  border-radius: 12px;
+  margin-bottom: 12px;
+  --background: var(--ion-color-light);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+ion-label h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+ion-item-option {
+  font-size: 0.9rem;
+}

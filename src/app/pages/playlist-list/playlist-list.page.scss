@@ -1,0 +1,16 @@
+ion-list {
+  margin-top: 16px;
+}
+
+ion-item {
+  --background: var(--ion-color-light);
+  border-radius: 10px;
+  margin: 8px 0;
+  padding: 8px 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

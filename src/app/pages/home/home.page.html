@@ -11,19 +11,19 @@
 
 <ion-content class="ion-padding">
   <div class="filter-bar">
-    <ion-segment [(ngModel)]="filter" class="custom-segment" (ionChange)="filterItems()">
-      <ion-segment-button value="all">All</ion-segment-button>
-      <ion-segment-button value="deezer">Stream</ion-segment-button>
-      <ion-segment-button value="playlists">Playlists</ion-segment-button>
-    </ion-segment>
+  <ion-segment [(ngModel)]="filter" class="custom-segment" (ionChange)="filterItems()">
+    <ion-segment-button value="all">All</ion-segment-button>
+    <ion-segment-button value="deezer">Stream</ion-segment-button>
+    <ion-segment-button value="playlists">Playlists</ion-segment-button>
+  </ion-segment>
 
-    <ion-button fill="outline" class="pill-button" (click)="createPlaylist()">
-      ➕ Create Playlist
-    </ion-button>
+  <ion-button class="pill-button" (click)="createPlaylist()">
+    ➕ Create Playlist
+  </ion-button>
 
-    <ion-button fill="outline" class="pill-button" (click)="fileInput.click()">
-      ➕ Add Music
-    </ion-button>
+  <ion-button class="pill-button" (click)="fileInput.click()">
+    ➕ Add Music
+  </ion-button>
   </div>
 
   <input type="file" accept=".mp3,.wav,.ogg,.flac,.aac,.opus" hidden #fileInput (change)="pickAndSaveFile($event)" />
