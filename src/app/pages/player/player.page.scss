@@ -1,8 +1,15 @@
+
+ion-toolbar {
+  --background: #ff0000;
+  --color: white;
+}
+
 .track-container {
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 20px;
 }
 
 .album-art {
@@ -11,30 +18,92 @@
   object-fit: cover;
   border-radius: 16px;
   margin: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
+  border: 2px solid rgba(255, 0, 0, 0.3);
 }
 
-.track-info h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: red;
+.track-info {
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff0000;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 0.9rem;
+    word-break: break-all;
+  }
 }
 
 .progress-container {
   width: 100%;
   padding: 0 16px;
+  margin: 20px 0;
 
   .time {
     display: flex;
     justify-content: space-between;
     font-size: 0.9rem;
-    color: red;
+    color: #ff0000;
+    margin-bottom: 5px;
+  }
+
+  ion-range {
+    --bar-background: rgba(255, 0, 0, 0.2);
+    --bar-background-active: #ff0000;
+    --knob-background: #ff0000;
+    --knob-size: 16px;
+    padding: 0;
   }
 }
 
 .controls {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
   margin-top: 20px;
+
+  ion-button {
+    --background: transparent;
+    --background-hover: rgba(255, 0, 0, 0.1);
+    --background-activated: rgba(255, 0, 0, 0.2);
+    --color: #ff0000;
+    width: 44px;
+    height: 44px;
+
+    &[fill="clear"] {
+      --color: #ff0000;
+    }
+
+    &[fill="outline"] {
+      --border-color: #ff0000;
+      --color: #ff0000;
+      --background-hover: rgba(255, 0, 0, 0.1);
+    }
+
+    &[fill="solid"] {
+      --background: #ff0000;
+      --background-hover: #cc0000;
+      --color: white;
+      width: 56px;
+      height: 56px;
+    }
+
+    ion-icon {
+      font-size: 24px;
+    }
+  }
+}
+
+
+ion-buttons ion-button {
+  --color: white;
+  --background-hover: rgba(255, 255, 255, 0.1);
+  
+  ion-icon {
+    font-size: 24px;
+  }
 }

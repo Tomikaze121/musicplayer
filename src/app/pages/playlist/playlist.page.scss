@@ -1,48 +1,80 @@
+
+ion-toolbar {
+  --background: #ff0000; 
+  --color: white; 
+}
+
 ion-content {
+  --background: #fff; 
   padding: 16px;
-  background: red , #fff;
 }
 
-.playlist-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-
-  h1 {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: red;
-  }
-
-  ion-button {
-    background-color: #e53935;
-    color: #fff;
-    font-weight: 500;
-    border-radius: 20px;
-    padding: 0 16px;
-    height: 36px;
-    font-size: 0.9rem;
-  }
-}
 
 ion-list {
   margin-top: 10px;
+  background: transparent;
+  
+  ion-item-sliding {
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(255, 0, 0, 0.1); 
+    overflow: hidden;
+    
+    ion-item {
+      --background: rgba(255, 0, 0, 0.05); 
+      --border-color: rgba(255, 0, 0, 0.1); 
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --min-height: 60px;
+      border-left: 4px solid #ff0000; 
+      
+      ion-label {
+        h2 {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #333; 
+        }
+        
+        p {
+          color: #666; 
+          font-size: 0.8rem;
+        }
+      }
+      
+      &:active {
+        --background: rgba(255, 0, 0, 0.1); 
+      }
+    }
+  }
 }
 
-ion-item-sliding {
-  border-radius: 12px;
-  margin-bottom: 12px;
-  --background: var(--ion-color-light);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+ion-item-options {
+  ion-item-option {
+    &[color="danger"] {
+      --background: #ff0000; 
+      --color: white; 
+      font-weight: 500;
+      height: 100%;
+      
+      &:active {
+        --background: #cc0000; 
+      }
+    }
+  }
 }
 
-ion-label h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
+
+.no-items {
+  text-align: center;
+  color: rgba(255, 0, 0, 0.5); 
+  margin-top: 40px;
+  font-size: 1.1rem;
 }
 
-ion-item-option {
-  font-size: 0.9rem;
+
+app-mini-player {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

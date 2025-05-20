@@ -15,6 +15,8 @@ import { Howl } from 'howler';
   styleUrls: ['./home.page.scss'],
   standalone: false,
 })
+
+//class variables
 export class HomePage implements OnInit {
   tracks: any[] = [];
   filteredTracks: any[] = [];
@@ -25,6 +27,7 @@ export class HomePage implements OnInit {
   isOnline: boolean = true;
   currentStreamSound: Howl | null = null;
 
+  //ga inject sa dependencies
   constructor(
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
@@ -34,6 +37,7 @@ export class HomePage implements OnInit {
     private deezerService: DeezerService
   ) {}
 
+  //mga problema sa na unsa ipangbutang para mu gana sa music player YEYAH!
   async ngOnInit() {
     await this.loadAudioFiles();
   }
@@ -95,6 +99,7 @@ export class HomePage implements OnInit {
     const file = event.target.files[0];
     if (!file) return;
 
+    // mu store og data
     const arrayBuffer = await file.arrayBuffer();
     const base64 = btoa(new Uint8Array(arrayBuffer).reduce((d, b) => d + String.fromCharCode(b), ''));
     await Filesystem.writeFile({ path: file.name, data: base64, directory: Directory.Documents });
